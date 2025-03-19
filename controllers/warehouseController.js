@@ -48,7 +48,9 @@ const getWarehouseInventories = async (req, res) => {
       });
       return;
     }
-
-
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 export { getAllWarehouses, getWarehouseDetails, getWarehouseInventories };
