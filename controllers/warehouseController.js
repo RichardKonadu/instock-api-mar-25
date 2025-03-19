@@ -54,4 +54,27 @@ const getWarehouseInventories = async (req, res) => {
   }
 };
 
-export { getAllWarehouses, getWarehouseDetails, getWarehouseInventories };
+const deleteWarehouse = async (req, res) => {
+  const warehouseId = req.params.id;
+
+  const sql = `SELECT * FROM warehouses WHERE warehouses.id = ?`;
+
+  try {
+    const [results] = await connection.query(sql, [warehouseId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ msg: `No record with ID${warehouseId} found` });
+    }
+
+    res.status(204).end();
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export {
+  getAllWarehouses,
+  getWarehouseDetails,
+  getWarehouseInventories,
+  deleteWarehouse,
+};
