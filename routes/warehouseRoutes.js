@@ -1,14 +1,14 @@
 import express from "express";
 import {
+  getAllWarehouses,
   getWarehouseDetails,
   getWarehouseInventories,
 } from "../controllers/warehouseController.js";
 
+
 const router = express.Router();
 
-router.get("/", (_req, res) => {
-  res.send("Warehouse routes...");
-});
+router.get("/", getAllWarehouses);
 
 router.get("/:id", getWarehouseDetails);
 
