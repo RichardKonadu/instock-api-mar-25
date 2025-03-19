@@ -1,11 +1,10 @@
 import express from "express";
 import connection from "../utils/mysql.js";
+import { getAllWarehouses } from "../controllers/warehouseController.js";
 
 const router = express.Router();
 
-router.get("/", (_req, res) => {
-  res.send("Warehouse routes...");
-});
+router.get("/", getAllWarehouses);
 
 router.get("/:id", async (req, res) => {
   const warehouseId = req.params.id;
