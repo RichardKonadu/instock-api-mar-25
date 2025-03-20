@@ -1,11 +1,11 @@
 import express from "express";
-import { getSingleInventory } from "../controllers/inventoryController.js";
+import {  } from "../controllers/inventoryController.js";
+import { getSingleInventory, getAllInventories } from "../controllers/inventoryController.js";
+
 
 const router = express.Router();
 
-router.get("/", (_req, res) => {
-  res.send("Inventory routes...");
-});
+router.get("/", getAllInventories);
 
 router.get("/:id", getSingleInventory);
 
