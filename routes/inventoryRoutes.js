@@ -1,11 +1,13 @@
 import express from "express";
-import {  } from "../controllers/inventoryController.js";
-import { getSingleInventory, getAllInventories } from "../controllers/inventoryController.js";
-
+import { addInventory } from "../controllers/inventoryController.js";
+import {
+  getSingleInventory,
+  getAllInventories,
+} from "../controllers/inventoryController.js";
 
 const router = express.Router();
 
-router.get("/", getAllInventories);
+router.route("/").get(getAllInventories).post(addInventory);
 
 router.get("/:id", getSingleInventory);
 

@@ -13,7 +13,7 @@ const getSingleInventory = async (req, res) => {
       return;
     }
     res.json(results[0]);
-   } catch (error) {
+  } catch (error) {
     res.status(500).json(error);
   }
 };
@@ -46,5 +46,20 @@ const getAllInventories = async (_req, res) => {
   }
 };
 
+const addInventory = async (req, res) => {
+  const formData = req.body;
+  const sql = `INSERT INTO inventories SET ?`;
 
-export {getSingleInventory, getAllInventories };
+  try {
+    const [results] = await connection.query(sql, [formData]);
+    console.log(results);
+
+    res
+      .status(201)
+      .json({ msg: "New inventory created with ID ${results.insertId}" });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export { getSingleInventory, getAllInventories, addInventory };
