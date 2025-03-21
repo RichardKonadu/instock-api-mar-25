@@ -15,6 +15,6 @@ router.route("/:id").get(getWarehouseDetails).patch(updateWarehouse);
 
 router.get("/:id/inventories", getWarehouseInventories);
 
-router.delete("/:id/delete", deleteWarehouse);
+router.delete("/:id", deleteWarehouse);
 
 export default router;
