@@ -1,3 +1,4 @@
+import { validateInventoryForm } from "../utils/helpers.js";
 import connection from "../utils/mysql.js";
 
 const getSingleInventory = async (req, res) => {
@@ -53,13 +54,15 @@ const addInventory = async (req, res) => {
   const formData = req.body;
   const sql = `INSERT INTO inventories SET ?`;
 
+  const validationResult = validateInventoryForm(formData);
+
   try {
     const [results] = await connection.query(sql, [formData]);
     console.log(results);
 
     res
       .status(201)
-      .json({ msg: "New inventory created with ID ${results.insertId}" });
+      .json({ msg: `New inventory created with ID ${results.insertId}` });
   } catch (error) {
     res.status(500).json({ error: error });
   }

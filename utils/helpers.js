@@ -3,8 +3,6 @@ import { parsePhoneNumber } from "libphonenumber-js/min";
 function validateWarehouseForm(data) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  console.log();
-
   if (
     !data.warehouse_name ||
     !data.address ||
@@ -32,4 +30,22 @@ function validateWarehouseForm(data) {
   return { success: true, data: data };
 }
 
-export { validateWarehouseForm };
+const validateInventoryForm = (data) => {
+  if (
+    !data.warehouse_id ||
+    !data.item_name ||
+    !data.description ||
+    !data.category ||
+    !data.status ||
+    !data.quantity
+  ) {
+    return {
+      success: false,
+      error: "All fields are required and cannot be empty.",
+    };
+  }
+
+  return { success: true, data: data };
+};
+
+export { validateWarehouseForm, validateInventoryForm };

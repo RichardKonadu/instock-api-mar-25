@@ -68,11 +68,13 @@ const addWarehouse = async (req, res) => {
   try {
     const [results] = await connection.query(sql, [formData]);
 
-    res.status(201).json({ msg: `Created warehouse with ID ${results.insertId}` });
+    res
+      .status(201)
+      .json({ msg: `Created warehouse with ID ${results.insertId}` });
   } catch (error) {
     res.status(500).json({ error: error });
   }
-}
+};
 
 const deleteWarehouse = async (req, res) => {
   const warehouseId = req.params.id;
