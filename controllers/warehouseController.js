@@ -1,4 +1,5 @@
 import connection from "../utils/mysql.js";
+import { validateWarehouseForm } from "../utils/helpers.js";
 
 const getAllWarehouses = async (_req, res) => {
   const sql = "SELECT * FROM warehouses";
@@ -54,10 +55,29 @@ const getWarehouseInventories = async (req, res) => {
   }
 };
 
+const addWarehouse = async (req, res) => {
+  const formData = req.body;
+  const sql = `INSERT INTO warehouses SET ?`;
+
+  const validationResult = validateWarehouseForm(formData);
+
+  if (!validationResult.success) {
+    res.json({ error: validationResult.error });
+  }
+
+  try {
+    const [results] = await connection.query(sql, [formData]);
+
+    res.status(201).json({ msg: `Created warehouse with ID ${results.insertId}` });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+}
+
 const deleteWarehouse = async (req, res) => {
   const warehouseId = req.params.id;
 
-  const sql = `SELECT * FROM warehouses WHERE warehouses.id = ?`;
+  const sql = `DELETE * FROM warehouses WHERE warehouses.id = ?`;
 
   try {
     const [results] = await connection.query(sql, [warehouseId]);
@@ -72,9 +92,37 @@ const deleteWarehouse = async (req, res) => {
   }
 };
 
+const updateWarehouse = async (req, res) => {
+  const warehouseId = req.params.id;
+
+  console.log(req.body);
+
+  if (!req.body.contact_phone && !req.body.contact_email) {
+    return res
+      .status(400)
+      .send({ message: "Please include a phone number and email address" });
+  }
+
+  const sql = `UPDATE warehouses SET ? WHERE warehouses.id = ?`;
+
+  try {
+    const [results] = await connection.query(sql, [req.body, warehouseId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ msg: `No record with ID${warehouseId} found` });
+    }
+
+    res.json({ message: `Warehouse ${warehouseId} has been updated` });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 export {
   getAllWarehouses,
   getWarehouseDetails,
   getWarehouseInventories,
+  addWarehouse,
   deleteWarehouse,
+  updateWarehouse,
 };
