@@ -14,6 +14,6 @@ router.get("/:id", getWarehouseDetails);
 
 router.get("/:id/inventories", getWarehouseInventories);
 
-router.delete("/:id/delete", deleteWarehouse);
+router.delete("/:id", deleteWarehouse);
 
 export default router;
