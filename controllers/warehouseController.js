@@ -72,9 +72,36 @@ const deleteWarehouse = async (req, res) => {
   }
 };
 
+const updateWarehouse = async (req, res) => {
+  const warehouseId = req.params.id;
+
+  console.log(req.body);
+
+  if (!req.body.contact_phone && !req.body.contact_email) {
+    return res
+      .status(400)
+      .send({ message: "Please include a phone number and email address" });
+  }
+
+  const sql = `UPDATE warehouses SET ? WHERE warehouses.id = ?`;
+
+  try {
+    const [results] = await connection.query(sql, [req.body, warehouseId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ msg: `No record with ID${warehouseId} found` });
+    }
+
+    res.json({ message: `Warehouse ${warehouseId} has been updated` });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 export {
   getAllWarehouses,
   getWarehouseDetails,
   getWarehouseInventories,
   deleteWarehouse,
+  updateWarehouse,
 };

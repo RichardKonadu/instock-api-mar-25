@@ -4,13 +4,14 @@ import {
   getWarehouseDetails,
   getWarehouseInventories,
   deleteWarehouse,
+  updateWarehouse,
 } from "../controllers/warehouseController.js";
 
 const router = express.Router();
 
 router.get("/", getAllWarehouses);
 
-router.get("/:id", getWarehouseDetails);
+router.route("/:id").get(getWarehouseDetails).patch(updateWarehouse);
 
 router.get("/:id/inventories", getWarehouseInventories);
 

@@ -3,7 +3,10 @@ import connection from "../utils/mysql.js";
 const getSingleInventory = async (req, res) => {
   const inventoryId = req.params.id;
 
-  const sql = `SELECT * FROM inventories WHERE inventories.id = ?`;
+  const sql = `SELECT inventories.*, warehouses.warehouse_name 
+    FROM inventories
+    JOIN warehouses ON inventories.warehouse_id = warehouses.id
+    WHERE inventories.id = ?;`;
 
   try {
     const [results] = await connection.query(sql, [inventoryId]);
