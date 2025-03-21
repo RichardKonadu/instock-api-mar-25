@@ -57,7 +57,7 @@ const getWarehouseInventories = async (req, res) => {
 const deleteWarehouse = async (req, res) => {
   const warehouseId = req.params.id;
 
-  const sql = `DELTE * FROM warehouses WHERE warehouses.id = ?`;
+  const sql = `DELETE * FROM warehouses WHERE warehouses.id = ?`;
 
   try {
     const [results] = await connection.query(sql, [warehouseId]);
