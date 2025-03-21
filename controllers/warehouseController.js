@@ -75,8 +75,6 @@ const deleteWarehouse = async (req, res) => {
 const updateWarehouse = async (req, res) => {
   const warehouseId = req.params.id;
 
-  console.log(req.body);
-
   if (!req.body.contact_phone && !req.body.contact_email) {
     return res
       .status(400)

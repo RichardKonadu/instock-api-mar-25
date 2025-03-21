@@ -16,7 +16,7 @@ const getSingleInventory = async (req, res) => {
       return;
     }
     res.json(results[0]);
-   } catch (error) {
+  } catch (error) {
     res.status(500).json(error);
   }
 };
@@ -49,5 +49,27 @@ const getAllInventories = async (_req, res) => {
   }
 };
 
+const updateInventory = async (req, res) => {
+  const inventoryId = req.params.id;
 
-export {getSingleInventory, getAllInventories };
+  if (!req.body.item_name && !req.body.description) {
+    return res
+      .status(400)
+      .send({ message: "please include an item name and description" });
+  }
+
+  const sql = `UPDATE inventories SET ? WHERE inventories.id = ?`;
+
+  try {
+    const [results] = await connection.query(sql, [req.body, inventoryId]);
+
+    if (results.affectedRows === 0) {
+      res.status(404).json({ msg: `No record with ID${inventoryId} found` });
+    }
+    res.json({ message: `Inventory with ID ${inventoryId} has been updated` });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+export { getSingleInventory, getAllInventories, updateInventory };
