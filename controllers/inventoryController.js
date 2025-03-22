@@ -49,6 +49,7 @@ const getAllInventories = async (_req, res) => {
   }
 };
 
+
 const updateInventory = async (req, res) => {
   const inventoryId = req.params.id;
 
@@ -63,13 +64,26 @@ const updateInventory = async (req, res) => {
   try {
     const [results] = await connection.query(sql, [req.body, inventoryId]);
 
+const deleteInventory = async (req, res) => {
+  const inventoryId = req.params.id;
+
+  const sql = `DELETE FROM inventories WHERE inventories.id = ?`;
+
+  try {
+    const [results] = await connection.query(sql, [inventoryId]);
+
+
     if (results.affectedRows === 0) {
       res.status(404).json({ msg: `No record with ID${inventoryId} found` });
     }
     res.json({ message: `Inventory with ID ${inventoryId} has been updated` });
+
+    res.status(204).end();
+
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
-export { getSingleInventory, getAllInventories, updateInventory };
+export { getSingleInventory, getAllInventories, updateInventory, deleteInventory };
+

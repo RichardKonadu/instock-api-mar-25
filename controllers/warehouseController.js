@@ -1,4 +1,5 @@
 import connection from "../utils/mysql.js";
+import { validateWarehouseForm } from "../utils/helpers.js";
 
 const getAllWarehouses = async (_req, res) => {
   const sql = "SELECT * FROM warehouses";
@@ -54,6 +55,25 @@ const getWarehouseInventories = async (req, res) => {
   }
 };
 
+const addWarehouse = async (req, res) => {
+  const formData = req.body;
+  const sql = `INSERT INTO warehouses SET ?`;
+
+  const validationResult = validateWarehouseForm(formData);
+
+  if (!validationResult.success) {
+    res.json({ error: validationResult.error });
+  }
+
+  try {
+    const [results] = await connection.query(sql, [formData]);
+
+    res.status(201).json({ msg: `Created warehouse with ID ${results.insertId}` });
+  } catch (error) {
+    res.status(500).json({ error: error });
+  }
+}
+
 const deleteWarehouse = async (req, res) => {
   const warehouseId = req.params.id;
 
@@ -100,6 +120,7 @@ export {
   getAllWarehouses,
   getWarehouseDetails,
   getWarehouseInventories,
+  addWarehouse,
   deleteWarehouse,
   updateWarehouse,
 };

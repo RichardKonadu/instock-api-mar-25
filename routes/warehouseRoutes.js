@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addWarehouse,
   getAllWarehouses,
   getWarehouseDetails,
   getWarehouseInventories,
@@ -9,7 +10,10 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllWarehouses);
+router
+  .route("/")
+  .get(getAllWarehouses)
+  .post(addWarehouse);
 
 router.route("/:id").get(getWarehouseDetails).patch(updateWarehouse);
 
