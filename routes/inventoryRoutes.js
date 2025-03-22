@@ -3,14 +3,18 @@ import {
   getSingleInventory,
   getAllInventories,
   updateInventory,
-  deleteInventory
+  deleteInventory,
+  addInventory,
 } from "../controllers/inventoryController.js";
 
 const router = express.Router();
 
-router.get("/", getAllInventories);
+router.route("/").get(getAllInventories).post(addInventory);
 
-router.route("/:id").get(getSingleInventory).patch(updateInventory).delete(deleteInventory);
-
+router
+  .route("/:id")
+  .get(getSingleInventory)
+  .patch(updateInventory)
+  .delete(deleteInventory);
 
 export default router;

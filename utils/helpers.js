@@ -32,4 +32,20 @@ function validateWarehouseForm(data) {
   return { success: true, data: data };
 }
 
-export { validateWarehouseForm };
+function validateInventoryForm(data) {
+  if (
+    !data.item_name ||
+    !data.description ||
+    !data.category ||
+    !data.status ||
+    !data.quantity
+  ) {
+    return {
+      success: false,
+      error: "All field are required and cannot be empty.",
+    };
+  }
+  return { success: true, data: data };
+}
+
+export { validateWarehouseForm, validateInventoryForm };
