@@ -62,22 +62,24 @@ const addWarehouse = async (req, res) => {
   const validationResult = validateWarehouseForm(formData);
 
   if (!validationResult.success) {
-    res.json({ error: validationResult.error });
+    res.status(400).json({ error: validationResult.error });
   }
 
   try {
     const [results] = await connection.query(sql, [formData]);
 
-    res.status(201).json({ msg: `Created warehouse with ID ${results.insertId}` });
+    res
+      .status(201)
+      .json({ msg: `Created warehouse with ID ${results.insertId}` });
   } catch (error) {
     res.status(500).json({ error: error });
   }
-}
+};
 
 const deleteWarehouse = async (req, res) => {
   const warehouseId = req.params.id;
 
-  const sql = `DELETE * FROM warehouses WHERE warehouses.id = ?`;
+  const sql = `DELETE FROM warehouses WHERE warehouses.id = ?`;
 
   try {
     const [results] = await connection.query(sql, [warehouseId]);
