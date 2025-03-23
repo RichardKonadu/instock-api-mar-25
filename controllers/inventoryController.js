@@ -81,7 +81,8 @@ const addInventory = async (req, res) => {
   const validationResult = validateInventoryForm(formData);
 
   if (!validationResult.success) {
-    res.json({ error: validationResult.error });
+    res.status(400).json({ error: validationResult.error });
+    return;
   }
   try {
     const [results] = await connection.query(sql, [formData]);

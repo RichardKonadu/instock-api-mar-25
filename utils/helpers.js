@@ -3,8 +3,6 @@ import { parsePhoneNumber } from "libphonenumber-js/min";
 function validateWarehouseForm(data) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  console.log();
-
   if (
     !data.warehouse_name ||
     !data.address ||

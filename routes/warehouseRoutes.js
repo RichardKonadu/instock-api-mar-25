@@ -10,15 +10,14 @@ import {
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(getAllWarehouses)
-  .post(addWarehouse);
+router.route("/").get(getAllWarehouses).post(addWarehouse);
 
-router.route("/:id").get(getWarehouseDetails).patch(updateWarehouse);
+router
+  .route("/:id")
+  .get(getWarehouseDetails)
+  .patch(updateWarehouse)
+  .delete(deleteWarehouse);
 
 router.get("/:id/inventories", getWarehouseInventories);
-
-router.delete("/:id", deleteWarehouse);
 
 export default router;
