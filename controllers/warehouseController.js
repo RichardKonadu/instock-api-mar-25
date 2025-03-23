@@ -62,22 +62,24 @@ const addWarehouse = async (req, res) => {
   const validationResult = validateWarehouseForm(formData);
 
   if (!validationResult.success) {
-    res.json({ error: validationResult.error });
+    return res.status(400).json({ error: validationResult.error });
   }
 
   try {
     const [results] = await connection.query(sql, [formData]);
 
-    res.status(201).json({ msg: `Created warehouse with ID ${results.insertId}` });
+    res
+      .status(201)
+      .json({ msg: `Created warehouse with ID ${results.insertId}` });
   } catch (error) {
     res.status(500).json({ error: error });
   }
-}
+};
 
 const deleteWarehouse = async (req, res) => {
   const warehouseId = req.params.id;
 
-  const sql = `DELETE * FROM warehouses WHERE warehouses.id = ?`;
+  const sql = `DELETE FROM warehouses WHERE warehouses.id = ?`;
 
   try {
     const [results] = await connection.query(sql, [warehouseId]);
@@ -101,18 +103,30 @@ const updateWarehouse = async (req, res) => {
       .send({ message: "Please include a phone number and email address" });
   }
 
+  const { created_at, updated_at, ...updatedData } = req.body;
+
+  const currentDateTime = new Date()
+    .toISOString()
+    .slice(0, 19)
+    .replace("T", " ");
+
+  updatedData.updated_at = currentDateTime;
+
   const sql = `UPDATE warehouses SET ? WHERE warehouses.id = ?`;
 
   try {
-    const [results] = await connection.query(sql, [req.body, warehouseId]);
+    const [results] = await connection.query(sql, [updatedData, warehouseId]);
 
     if (results.affectedRows === 0) {
-      res.status(404).json({ msg: `No record with ID${warehouseId} found` });
+      return res
+        .status(404)
+        .json({ msg: `No record with ID ${warehouseId} found` });
     }
 
     res.json({ message: `Warehouse ${warehouseId} has been updated` });
   } catch (error) {
-    res.status(500).json(error);
+    console.error("Database error", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
