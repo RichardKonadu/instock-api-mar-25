@@ -65,10 +65,10 @@ const updateInventory = async (req, res) => {
     const [results] = await connection.query(sql, [req.body, inventoryId]);
 
     if (results.affectedRows === 0) {
-      res.status(404).json({ msg: `No record with ID${warehouseId} found` });
+      res.status(404).json({ msg: `No record with ID${inventoryId} found` });
     }
 
-    res.json({ message: `Warehouse ${warehouseId} has been updated` });
+    res.json({ message: `Inventory  ${inventoryId} has been updated` });
   } catch (error) {
     res.status(500).json(error);
   }
